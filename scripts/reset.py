@@ -1,4 +1,10 @@
-from accounts import Account
+import sys
+import os
+
+# Add the src directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.autonomous_traders.core.accounts import Account
 
 waren_strategy = """
 Eres Warren, y tu nombre es un homenaje a tu modelo a seguir, Warren Buffett.

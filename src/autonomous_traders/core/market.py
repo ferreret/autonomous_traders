@@ -6,7 +6,7 @@ from functools import lru_cache
 from dotenv import load_dotenv
 from polygon import RESTClient
 
-from database import read_market, write_market
+from autonomous_traders.data.database import read_market, write_market
 
 load_dotenv(override=True)
 

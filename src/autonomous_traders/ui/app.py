@@ -2,10 +2,10 @@ import gradio as gr
 import pandas as pd
 import plotly.express as px
 
-from accounts import Account
-from database import read_log
-from trading_floor import lastnames, names, short_model_names
-from util import Color, css, js
+from autonomous_traders.core.accounts import Account
+from autonomous_traders.data.database import read_log
+from autonomous_traders.ui.trading_floor import lastnames, names, short_model_names
+from autonomous_traders.utils.util import Color, css, js
 
 mapper = {
     "trace": Color.WHITE,
@@ -17,7 +17,7 @@ mapper = {
 }
 
 
-class Trader:
+class TraderViewModel:
     def __init__(self, name: str, lastname: str, model_name: str):
         self.name = name
         self.lastname = lastname
@@ -102,7 +102,7 @@ class Trader:
 
 
 class TraderView:
-    def __init__(self, trader: Trader):
+    def __init__(self, trader: TraderViewModel):
         self.trader = trader
         self.portfolio_value = None
         self.chart = None
@@ -180,7 +180,7 @@ def create_ui():
     """Crea la interfaz principal de Gradio para la simulación de trading"""
 
     traders = [
-        Trader(trader_name, lastname, model_name)
+        TraderViewModel(trader_name, lastname, model_name)
         for trader_name, lastname, model_name in zip(
             names, lastnames, short_model_names
         )

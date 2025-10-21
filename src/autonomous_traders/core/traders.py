@@ -2,18 +2,22 @@ import json
 import os
 from contextlib import AsyncExitStack
 
-from accounts_client import read_accounts_resource, read_strategy_resource
+from autonomous_traders.utils.accounts_client import (
+    read_accounts_resource, read_strategy_resource
+)
 from dotenv import load_dotenv
-from mcp_params import researcher_mcp_server_params, trader_mcp_server_params
+from autonomous_traders.utils.mcp_params import (
+    researcher_mcp_server_params, trader_mcp_server_params
+)
 from openai import AsyncOpenAI
-from templates import (
+from autonomous_traders.utils.templates import (
     rebalance_message,
     research_tool,
     researcher_instructions,
     trade_message,
     trader_instructions,
 )
-from tracers import make_trace_id
+from autonomous_traders.utils.tracers import make_trace_id
 
 from agents import Agent, OpenAIChatCompletionsModel, Runner, Tool, trace
 from agents.mcp import MCPServerStdio

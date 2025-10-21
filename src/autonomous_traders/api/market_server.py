@@ -1,4 +1,4 @@
-from market import get_share_price
+from autonomous_traders.core.market import get_share_price
 
 from mcp.server.fastmcp import FastMCP
 

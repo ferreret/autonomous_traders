@@ -6,7 +6,7 @@ from mcp import StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 params = StdioServerParameters(
-    command="uv", args=["run", "accounts_server.py"], env=None
+    command="uv", args=["run", "-m", "autonomous_traders.api.accounts_server"], env=None
 )
 
 

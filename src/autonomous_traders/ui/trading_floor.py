@@ -5,9 +5,9 @@ from typing import List
 from agents import add_trace_processor
 from dotenv import load_dotenv
 
-from market import is_market_open
-from tracers import LogTracer
-from traders import Trader
+from autonomous_traders.core.market import is_market_open
+from autonomous_traders.utils.tracers import LogTracer
+from autonomous_traders.core.traders import Trader
 
 load_dotenv(override=True)
 

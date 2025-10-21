@@ -1,6 +1,6 @@
 from mcp.server.fastmcp import FastMCP
 
-from accounts import Account
+from autonomous_traders.core.accounts import Account
 
 mcp = FastMCP("accounts_server")
 

@@ -4,8 +4,8 @@ from datetime import datetime
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from database import read_account, write_account, write_log
-from market import get_share_price
+from autonomous_traders.data.database import read_account, write_account, write_log
+from autonomous_traders.core.market import get_share_price
 
 load_dotenv(override=True)
 
