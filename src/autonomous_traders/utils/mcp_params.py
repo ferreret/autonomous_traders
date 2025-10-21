@@ -29,6 +29,7 @@ else:
 trader_mcp_server_params = [
     {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.accounts_server"]},
     {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.push_server"]},
+    {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.financial_analysis_server"]},
     market_mcp,
 ]
 

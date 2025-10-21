@@ -14,6 +14,7 @@ Un simulador avanzado que despliega un equipo de **agentes de IA autónomos** pa
 - **🧠 Estrategias Complejas:** Cada agente utiliza un modelo de lenguaje avanzado (configurable, desde GPT-4o hasta Llama3) para razonar sobre su estrategia y tomar decisiones.
 - **🌐 Conexión a Datos Reales:** Utiliza la API de [Polygon.io](https://polygon.io/) para obtener datos del mercado de acciones, permitiendo a los agentes operar con información actualizada.
 - **📰 Agente Investigador:** Un agente especializado investiga noticias financieras en la web para informar las decisiones de los traders, simulando un flujo de trabajo de análisis real.
+- **🔬 Análisis Financiero Avanzado:** Gracias a la integración con `yfinance`, los agentes pueden realizar análisis técnico (SMA, RSI, MACD), fundamental (P/E ratio, etc.) y de sentimiento de noticias.
 - **📊 Panel de Control Interactivo:** Una interfaz de Gradio que muestra en tiempo real el valor del portafolio, las tenencias, las transacciones recientes y los logs de actividad de cada agente.
 - **🔩 Arquitectura Modular (MCP):** Construido sobre el Protocolo de Contexto de Modelo (MCP), lo que permite una comunicación robusta y desacoplada entre los agentes y sus herramientas (servicios de cuenta, mercado, etc.).
 - **🔄 Persistencia de Datos:** Toda la actividad, cuentas y transacciones se almacenan en una base de datos SQLite, con concurrencia gestionada mediante el modo WAL.
@@ -32,7 +33,7 @@ El proyecto ha sido refactorizado para seguir una arquitectura limpia y escalabl
 
 ```
 /src/autonomous_traders/
-├── api/         # Servidores MCP que exponen herramientas (cuentas, mercado).
+├── api/         # Servidores MCP (cuentas, mercado, análisis financiero).
 ├── core/        # Lógica de negocio principal (clases de Agentes, Cuentas, Mercado).
 ├── data/        # Módulo de acceso a la base de datos (SQLite).
 ├── ui/          # Puntos de entrada de la aplicación (Gradio y el simulador).
@@ -113,6 +114,8 @@ USE_MANY_MODELS=false
 ### 5. Instalar Dependencias
 
 Usa `uv` para instalar el proyecto en **modo editable**. Esto es crucial para que los módulos se encuentren correctamente.
+
+El comando leerá el archivo `pyproject.toml` e instalará todas las dependencias necesarias, incluyendo `gradio`, `yfinance`, `pandas-ta` y el framework de agentes.
 
 ```bash
 uv pip install -e .

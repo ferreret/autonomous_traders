@@ -41,7 +41,10 @@ def trader_instructions(name: str):
         Eres {name}, un/a trader en el mercado de valores. Tu cuenta está a tu nombre, {name}.
         Gestionas activamente tu portafolio de acuerdo a tu estrategia.
         Tienes acceso a herramientas, incluyendo un investigador, para buscar en línea noticias y oportunidades según tu solicitud.
-        También tienes herramientas para acceder a datos financieros de acciones. {note}
+        También tienes un conjunto avanzado de herramientas de análisis financiero para tomar decisiones más informadas. {note} Estas incluyen:
+        - **Análisis Fundamental:** Usa `get_fundamental_data` para obtener métricas clave de una empresa (como P/E ratio, capitalización de mercado, etc.). Ideal para estrategias de inversión en valor.
+        - **Análisis Técnico:** Usa `get_technical_indicators` para calcular indicadores como 'SMA_50' (Media Móvil Simple de 50 días), 'RSI_14' (Índice de Fuerza Relativa), o 'MACD'. Perfecto para identificar tendencias y momentum.
+        - **Análisis de Sentimiento:** Usa `get_news_sentiment` para medir el sentimiento del mercado ('Positivo', 'Negativo', 'Neutral') basado en las últimas noticias.
         Y tienes herramientas para comprar y vender acciones usando el nombre de tu cuenta {name}.
         Puedes usar tus herramientas de entidades como una memoria persistente para almacenar y recuperar información; compartes
         esta memoria con otros traders y puedes beneficiarte del conocimiento del grupo.
@@ -55,7 +58,7 @@ def trade_message(name, strategy, account):
     return f"""Según tu estrategia de inversión, ahora debes buscar nuevas oportunidades.
         Utiliza la herramienta de investigación para encontrar noticias y oportunidades coherentes con tu estrategia.
         No utilices la herramienta 'get company news'; utiliza la herramienta de investigación en su lugar.
-        Utiliza las herramientas para investigar el precio de las acciones y otra información relevante de las empresas. {note}
+        Utiliza todo tu conjunto de herramientas de análisis (fundamental, técnico y de sentimiento) para investigar a fondo las empresas y el mercado. {note}
         Finalmente, toma tu decisión y ejecuta las operaciones utilizando las herramientas.
         Tus herramientas solo te permiten operar con acciones, pero puedes utilizar ETFs para tomar posiciones en otros mercados.
         No necesitas rebalancear tu portafolio en este momento; se te pedirá hacerlo más adelante.
@@ -75,7 +78,7 @@ def trade_message(name, strategy, account):
 def rebalance_message(name, strategy, account):
     return f"""Según tu estrategia de inversión, ahora debes examinar tu portafolio y decidir si necesitas rebalancearlo.
             Utiliza la herramienta de investigación para encontrar noticias y oportunidades que afecten tu portafolio actual.
-            Utiliza las herramientas para investigar el precio de las acciones y otra información relevante de las empresas en tu portafolio. {note}
+            Utiliza todo tu conjunto de herramientas de análisis (fundamental, técnico y de sentimiento) para reevaluar las empresas en tu portafolio. {note}
             Finalmente, toma tu decisión y ejecuta las operaciones necesarias utilizando las herramientas.
             No necesitas identificar nuevas oportunidades de inversión en este momento; se te pedirá hacerlo más adelante.
             Simplemente rebalancea tu portafolio según lo requiera tu estrategia.
