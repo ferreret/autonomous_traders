@@ -1,4 +1,4 @@
-# 📈 Autonomous AI Trading Floor
+# 📈 Autonomous AI Trading
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue?style=for-the-badge&logo=python)
 ![Gradio](https://img.shields.io/badge/Gradio-4-orange?style=for-the-badge&logo=gradio)
