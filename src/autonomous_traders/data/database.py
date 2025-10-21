@@ -11,8 +11,6 @@ DB = "accounts.db"
 
 def get_db_connection():
     """Crea una conexión a la base de datos con el modo WAL activado."""
-    # Se ha aumentado el tiempo de espera y se ha activado el modo WAL para evitar los errores "database is locked" (la base de datos está bloqueada)
-    # durante las lecturas simultáneas de la aplicación Gradio y las escrituras de los traders.
     conn = sqlite3.connect(DB, timeout=10)
     conn.execute("PRAGMA journal_mode=WAL")
     return conn
@@ -37,6 +35,20 @@ with get_db_connection() as conn:
     )
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS market (date TEXT PRIMARY KEY, data TEXT)"
+    )
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS pending_trades (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            trader_name TEXT NOT NULL,
+            symbol TEXT NOT NULL,
+            quantity INTEGER NOT NULL,
+            rationale TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            status TEXT DEFAULT 'pending',
+            supervisor_feedback TEXT
+        )
+    """
     )
     conn.commit()
 
@@ -65,16 +77,7 @@ def read_account(name):
 
 
 def write_log(name: str, type: str, message: str):
-    """
-    Escribe una entrada de registro en la tabla de registros.
-
-    Args:
-        name (str): El nombre asociado con el registro
-        type (str): El tipo de entrada de registro
-        message (str): El mensaje de registro
-    """
     now = datetime.now().isoformat()
-
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(
@@ -88,16 +91,6 @@ def write_log(name: str, type: str, message: str):
 
 
 def read_log(name: str, last_n=10):
-    """
-    Lee las entradas de registro más recientes para un nombre determinado.
-
-    Args:
-        name (str): El nombre para el que se recuperarán los registros
-        last_n (int): El número de entradas más recientes que se van a recuperar
-
-    Returns:
-        list: Una lista de tuplas que contienen (datetime, type, message)
-    """
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(
@@ -109,7 +102,6 @@ def read_log(name: str, last_n=10):
         """,
             (name.lower(), last_n),
         )
-
         return reversed(cursor.fetchall())
 
 
@@ -134,3 +126,43 @@ def read_market(date: str) -> dict | None:
         cursor.execute("SELECT data FROM market WHERE date = ?", (date,))
         row = cursor.fetchone()
         return json.loads(row[0]) if row else None
+
+# --- Funciones para Operaciones Pendientes ---
+
+def create_pending_trade(trader_name: str, symbol: str, quantity: int, rationale: str):
+    """Crea un registro para una nueva propuesta de operación en estado pendiente."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO pending_trades (trader_name, symbol, quantity, rationale)
+            VALUES (?, ?, ?, ?)
+            """,
+            (trader_name.lower(), symbol, quantity, rationale),
+        )
+        conn.commit()
+        return cursor.lastrowid
+
+def get_pending_trades() -> list[dict]:
+    """Obtiene todas las operaciones que están actualmente en estado pendiente."""
+    with get_db_connection() as conn:
+        conn.row_factory = sqlite3.Row  # Devuelve filas que se comportan como diccionarios
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM pending_trades WHERE status = 'pending'")
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]
+
+
+def update_trade_status(trade_id: int, status: str, supervisor_feedback: str | None = None):
+    """Actualiza el estado de una operación pendiente (p. ej., a 'approved' o 'rejected')."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            UPDATE pending_trades
+            SET status = ?, supervisor_feedback = ?
+            WHERE id = ?
+            """,
+            (status, supervisor_feedback, trade_id),
+        )
+        conn.commit()

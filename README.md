@@ -16,6 +16,7 @@ Un simulador avanzado que despliega un equipo de **agentes de IA autónomos** pa
 - **📰 Agente Investigador:** Un agente especializado investiga noticias financieras en la web para informar las decisiones de los traders, simulando un flujo de trabajo de análisis real.
 - **🔬 Análisis Financiero Avanzado:** Gracias a la integración con `yfinance`, los agentes pueden realizar análisis técnico (SMA, RSI, MACD), fundamental (P/E ratio, etc.) y de sentimiento de noticias.
 - **📊 Panel de Control Interactivo:** Una interfaz de Gradio que muestra en tiempo real el valor del portafolio, las tenencias, las transacciones recientes y los logs de actividad de cada agente.
+- **👮 Agente Supervisor de Cumplimiento:** Un agente dedicado que revisa y aprueba/rechaza las operaciones propuestas por los traders, aplicando reglas de riesgo y coherencia estratégica, y proporcionando feedback.
 - **🔩 Arquitectura Modular (MCP):** Construido sobre el Protocolo de Contexto de Modelo (MCP), lo que permite una comunicación robusta y desacoplada entre los agentes y sus herramientas (servicios de cuenta, mercado, etc.).
 - **🔄 Persistencia de Datos:** Toda la actividad, cuentas y transacciones se almacenan en una base de datos SQLite, con concurrencia gestionada mediante el modo WAL.
 
@@ -33,10 +34,10 @@ El proyecto ha sido refactorizado para seguir una arquitectura limpia y escalabl
 
 ```
 /src/autonomous_traders/
-├── api/         # Servidores MCP (cuentas, mercado, análisis financiero).
-├── core/        # Lógica de negocio principal (clases de Agentes, Cuentas, Mercado).
+├── api/         # Servidores MCP (cuentas, mercado, análisis financiero, ejecución, base de datos).
+├── core/        # Lógica de negocio principal (clases de Agentes, Cuentas, Mercado, Supervisor).
 ├── data/        # Módulo de acceso a la base de datos (SQLite).
-├── ui/          # Puntos de entrada de la aplicación (Gradio y el simulador).
+├── ui/          # Puntos de entrada de la aplicación (Gradio, simulador de traders, simulador de supervisor).
 └── utils/       # Utilidades, clientes, prompts y configuración.
 ```
 
@@ -123,15 +124,21 @@ uv pip install -e .
 
 ### 6. Ejecutar la Aplicación
 
-¡Todo listo! Ahora puedes lanzar el simulador y el panel de control. Se recomienda hacerlo en dos terminales separadas.
+¡Todo listo! Ahora puedes lanzar el simulador y el panel de control. **Se recomienda hacerlo en TRES terminales separadas.**
 
-**Terminal 1: Iniciar los Agentes Autónomos**
+**Terminal 1: Iniciar el Agente Supervisor**
+
+```bash
+python3 -m src.autonomous_traders.ui.supervisor_floor
+```
+
+**Terminal 2: Iniciar los Agentes Traders**
 
 ```bash
 python3 -m src.autonomous_traders.ui.trading_floor
 ```
 
-**Terminal 2: Iniciar el Panel de Gradio**
+**Terminal 3: Iniciar el Panel de Gradio**
 
 ```bash
 python3 -m src.autonomous_traders.ui.app

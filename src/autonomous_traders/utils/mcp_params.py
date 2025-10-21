@@ -24,17 +24,15 @@ else:
     market_mcp = {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.market_server"]}
 
 
-# El conjunto completo de servidores MCP para el trader: Cuentas, Notificaciones Push y Mercado
-
+# El conjunto completo de servidores MCP para el trader: Cuentas (solo propuestas), Notificaciones Push, Análisis Financiero y Mercado
 trader_mcp_server_params = [
-    {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.accounts_server"]},
+    {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.accounts_server"]}, # Ahora solo para proponer operaciones
     {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.push_server"]},
     {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.financial_analysis_server"]},
     market_mcp,
 ]
 
 # El conjunto completo de servidores MCP para el investigador: Fetch, Brave Search y Memoria
-
 
 def researcher_mcp_server_params(name: str):
     return [
@@ -50,3 +48,11 @@ def researcher_mcp_server_params(name: str):
             "env": {"LIBSQL_URL": f"file:./memory/{name}.db"},
         },
     ]
+
+# El conjunto completo de servidores MCP para el supervisor: Cuentas (lectura), Mercado (precios), Ejecución y Base de Datos
+supervisor_mcp_server_params = [
+    {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.accounts_server"]}, # Para leer cuentas y estrategias
+    market_mcp, # Para obtener precios de acciones
+    {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.execution_server"]}, # Para ejecutar operaciones aprobadas
+    {"command": "uv", "args": ["run", "-m", "autonomous_traders.api.database_server"]}, # Para gestionar operaciones pendientes y logs
+]

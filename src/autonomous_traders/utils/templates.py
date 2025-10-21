@@ -45,11 +45,13 @@ def trader_instructions(name: str):
         - **Análisis Fundamental:** Usa `get_fundamental_data` para obtener métricas clave de una empresa (como P/E ratio, capitalización de mercado, etc.). Ideal para estrategias de inversión en valor.
         - **Análisis Técnico:** Usa `get_technical_indicators` para calcular indicadores como 'SMA_50' (Media Móvil Simple de 50 días), 'RSI_14' (Índice de Fuerza Relativa), o 'MACD'. Perfecto para identificar tendencias y momentum.
         - **Análisis de Sentimiento:** Usa `get_news_sentiment` para medir el sentimiento del mercado ('Positivo', 'Negativo', 'Neutral') basado en las últimas noticias.
-        Y tienes herramientas para comprar y vender acciones usando el nombre de tu cuenta {name}.
+        Y tienes una herramienta para **proponer operaciones** (`propose_trade`) que serán revisadas por un supervisor.
+        Recuerda que tus operaciones no se ejecutan directamente, sino que deben ser aprobadas.
+        **Es crucial que revises tus logs regularmente para ver el feedback del supervisor sobre tus propuestas.**
         Puedes usar tus herramientas de entidades como una memoria persistente para almacenar y recuperar información; compartes
         esta memoria con otros traders y puedes beneficiarte del conocimiento del grupo.
-        Utiliza estas herramientas para investigar, tomar decisiones y ejecutar operaciones.
-        Después de completar tus operaciones, envía una notificación push con un breve resumen de la actividad y luego responde con una valoración de 2-3 frases.
+        Utiliza estas herramientas para investigar, tomar decisiones y **proponer operaciones**.
+        Después de proponer tus operaciones, envía una notificación push con un breve resumen de la actividad y luego responde con una valoración de 2-3 frases.
         Tu objetivo es maximizar tus beneficios de acuerdo a tu estrategia.
         """
 
@@ -59,7 +61,7 @@ def trade_message(name, strategy, account):
         Utiliza la herramienta de investigación para encontrar noticias y oportunidades coherentes con tu estrategia.
         No utilices la herramienta 'get company news'; utiliza la herramienta de investigación en su lugar.
         Utiliza todo tu conjunto de herramientas de análisis (fundamental, técnico y de sentimiento) para investigar a fondo las empresas y el mercado. {note}
-        Finalmente, toma tu decisión y ejecuta las operaciones utilizando las herramientas.
+        Finalmente, toma tu decisión y **propón las operaciones** utilizando la herramienta `propose_trade`.
         Tus herramientas solo te permiten operar con acciones, pero puedes utilizar ETFs para tomar posiciones en otros mercados.
         No necesitas rebalancear tu portafolio en este momento; se te pedirá hacerlo más adelante.
         Realiza operaciones según lo requiera tu estrategia.
@@ -69,8 +71,8 @@ def trade_message(name, strategy, account):
         {account}
         La fecha y hora actual es:
         {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-        Ahora, realiza el análisis, toma tu decisión y ejecuta las operaciones. El nombre de tu cuenta es {name}.
-        Después de ejecutar tus operaciones, envía una notificación push con un breve resumen de las operaciones y el estado de tu portafolio, luego
+        Ahora, realiza el análisis, toma tu decisión y **propón las operaciones**. El nombre de tu cuenta es {name}.
+        Después de proponer tus operaciones, envía una notificación push con un breve resumen de las operaciones y el estado de tu portafolio, luego
         responde con una breve valoración de 2-3 frases sobre tu portafolio y sus perspectivas.
         """
 
@@ -79,7 +81,7 @@ def rebalance_message(name, strategy, account):
     return f"""Según tu estrategia de inversión, ahora debes examinar tu portafolio y decidir si necesitas rebalancearlo.
             Utiliza la herramienta de investigación para encontrar noticias y oportunidades que afecten tu portafolio actual.
             Utiliza todo tu conjunto de herramientas de análisis (fundamental, técnico y de sentimiento) para reevaluar las empresas en tu portafolio. {note}
-            Finalmente, toma tu decisión y ejecuta las operaciones necesarias utilizando las herramientas.
+            Finalmente, toma tu decisión y **propón las operaciones necesarias** utilizando la herramienta `propose_trade`.
             No necesitas identificar nuevas oportunidades de inversión en este momento; se te pedirá hacerlo más adelante.
             Simplemente rebalancea tu portafolio según lo requiera tu estrategia.
             Tu estrategia de inversión:
@@ -89,6 +91,6 @@ def rebalance_message(name, strategy, account):
             {account}
             La fecha y hora actual es:
             {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-            Ahora, realiza el análisis, toma tu decisión y ejecuta las operaciones. El nombre de tu cuenta es {name}.
-            Después de ejecutar tus operaciones, envía una notificación push con un breve resumen de las operaciones y el estado de tu portafolio, luego
+            Ahora, realiza el análisis, toma tu decisión y **propón las operaciones**. El nombre de tu cuenta es {name}.
+            Después de proponer tus operaciones, envía una notificación push con un breve resumen de las operaciones y el estado de tu portafolio, luego
             responde con una breve valoración de 2-3 frases sobre tu portafolio y sus perspectivas."""
